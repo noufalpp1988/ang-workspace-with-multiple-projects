@@ -29,7 +29,11 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              {
+                "input": "node_modules/document-register-element/build/document-register-element.js"
+              }
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -62,7 +66,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "workspace-with-projects:build"
+            "browserTarget": "workspace-with-projects:build",
+            "port": 4000
           },
           "configurations": {
             "production": {
@@ -134,7 +139,187 @@
           }
         }
       }
+    },
+    "AppOne": {
+      "root": "projects/AppOne/",
+      "sourceRoot": "projects/AppOne/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/AppOne",
+            "index": "projects/AppOne/src/index.html",
+            "main": "projects/AppOne/src/main.ts",
+            "polyfills": "projects/AppOne/src/polyfills.ts",
+            "tsConfig": "projects/AppOne/tsconfig.app.json",
+            "assets": [
+              "projects/AppOne/src/favicon.ico",
+              "projects/AppOne/src/assets"
+            ],
+            "styles": [
+              "projects/AppOne/src/styles.scss"
+            ],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/AppOne/src/environments/environment.ts",
+                  "with": "projects/AppOne/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "AppOne:build",
+            "port": 4001
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "AppOne:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "AppOne:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/AppOne/src/test.ts",
+            "polyfills": "projects/AppOne/src/polyfills.ts",
+            "tsConfig": "projects/AppOne/tsconfig.spec.json",
+            "karmaConfig": "projects/AppOne/karma.conf.js",
+            "styles": [
+              "projects/AppOne/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/AppOne/src/favicon.ico",
+              "projects/AppOne/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/AppOne/tsconfig.app.json",
+              "projects/AppOne/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "AppOne-e2e": {
+      "root": "projects/AppOne-e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/AppOne-e2e/protractor.conf.js",
+            "devServerTarget": "AppOne:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "AppOne:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/AppOne-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "smartops-ui-core": {
+      "root": "projects/smartops-ui-core",
+      "sourceRoot": "projects/smartops-ui-core/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "schematics": {
+        "@schematics/angular": {
+          "component": {
+            "spec": false
+          }
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/smartops-ui-core/tsconfig.lib.json",
+            "project": "projects/smartops-ui-core/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/smartops-ui-core/src/test.ts",
+            "tsConfig": "projects/smartops-ui-core/tsconfig.spec.json",
+            "karmaConfig": "projects/smartops-ui-core/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/smartops-ui-core/tsconfig.lib.json",
+              "projects/smartops-ui-core/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
-  "defaultProject": "workspace-with-projects"
+  "defaultProject": "workspace-with-projects",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
